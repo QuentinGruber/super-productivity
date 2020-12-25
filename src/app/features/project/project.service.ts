@@ -6,6 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { ProjectActionTypes, UpdateProjectOrder } from './store/project.actions';
 import * as shortid from 'shortid';
 import {
+  selectAllProjectColors,
   selectArchivedProjects,
   selectGithubCfgByProjectId,
   selectGitlabCfgByProjectId,
@@ -24,7 +25,7 @@ import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { isValidProjectExport } from './util/is-valid-project-export';
 import { SnackService } from '../../core/snack/snack.service';
 import { T } from '../../t.const';
-import { BreakNr, BreakTime, WorkContextType } from '../work-context/work-context.model';
+import { BreakNr, BreakTime, WorkContextColorEntry, WorkContextType } from '../work-context/work-context.model';
 import { WorkContextService } from '../work-context/work-context.service';
 import { GITHUB_TYPE, GITLAB_TYPE, JIRA_TYPE } from '../issue/issue.const';
 import { GitlabCfg } from '../issue/providers/gitlab/gitlab';
@@ -58,6 +59,7 @@ export class ProjectService {
       : of(false)
     )
   );
+  projectColors$: Observable<WorkContextColorEntry[]> = this._store$.pipe(select(selectAllProjectColors));
 
   // DYNAMIC
 
