@@ -1,6 +1,7 @@
 import {
   AddSubTask,
   AddTask,
+  AddTaskReminder,
   AddTimeSpent,
   DeleteMainTasks,
   DeleteTask,
@@ -10,6 +11,7 @@ import {
   MoveToArchive,
   MoveToOtherProject,
   RemoveTagsForAllTasks,
+  RemoveTaskReminder,
   RemoveTimeSpent,
   RestoreTask,
   RoundTimeSpentForDay,
@@ -19,6 +21,7 @@ import {
   TaskActionTypes,
   ToggleTaskShowSubTasks,
   UpdateTask,
+  UpdateTaskReminder,
   UpdateTaskTags,
   UpdateTaskUi
 } from './task.actions';
@@ -521,6 +524,38 @@ export function taskReducer(
         id: taskId,
         changes: {
           attachments: (state.entities[taskId] as Task).attachments.filter(at => at.id !== id)
+        }
+      }, state);
+    }
+
+    // REMINDER STUFF
+    // --------------
+    case TaskActionTypes.AddTaskReminder: {
+      const {task, remindAt} = (action as AddTaskReminder).payload;
+      return taskAdapter.updateOne({
+        id: task.id,
+        changes: {
+          plannedAt: remindAt,
+        }
+      }, state);
+    }
+
+    case TaskActionTypes.UpdateTaskReminder: {
+      const {id, remindAt} = (action as UpdateTaskReminder).payload;
+      return taskAdapter.updateOne({
+        id,
+        changes: {
+          plannedAt: remindAt,
+        }
+      }, state);
+    }
+
+    case TaskActionTypes.RemoveTaskReminder: {
+      const {id} = (action as RemoveTaskReminder).payload;
+      return taskAdapter.updateOne({
+        id,
+        changes: {
+          plannedAt: null,
         }
       }, state);
     }
