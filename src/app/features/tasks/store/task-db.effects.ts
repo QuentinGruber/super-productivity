@@ -36,6 +36,11 @@ export class TaskDbEffects {
         TaskActionTypes.ToggleStart,
         TaskActionTypes.RoundTimeSpentForDay,
 
+        // REMINDER
+        TaskActionTypes.AddTaskReminder,
+        TaskActionTypes.UpdateTaskReminder,
+        TaskActionTypes.RemoveTaskReminder,
+
         // SUB ACTIONS
         TaskAttachmentActionTypes.AddTaskAttachment,
         TaskAttachmentActionTypes.DeleteTaskAttachment,
