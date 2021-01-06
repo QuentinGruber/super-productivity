@@ -19,7 +19,9 @@ import '@angular/common/locales/global/it';
 import '@angular/common/locales/global/pt';
 import '@angular/common/locales/global/nl';
 
-export const ALL_THEMES = [
+export const DAY_STARTS_AT: string = '9:00';
+
+export const ALL_THEMES: string[] = [
   'blue',
   'blue-grey',
   'light-blue',
