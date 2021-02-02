@@ -205,6 +205,43 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  getTimestampsOfNextHour(hour: number) {
+    const timestamp =  Date.now();
+    const timestampInDays = timestamp/ (1000*60*60*24)
+
+    const currentDayTimestamp = timestampInDays.toFixed(3).toString().split(".")[1];
+    const hourAimed = (hour - 1) * 1000 /24;
+    let result;
+    if(parseInt(currentDayTimestamp) > hourAimed){
+      result = parseInt(timestampInDays.toFixed(0))+hourAimed/1000
+    }
+    else{
+  	result = Math.trunc(timestampInDays)+hourAimed/1000;
+    }
+    return result *= (1000 * 60 * 60 * 24);
+  }
+
+
+  moveTaskToTomorow() {    
+    
+    const timestamp = this.getTimestampsOfNextHour(9);
+
+    if (this.task.reminderId) {
+      this._taskService.updateReminder(
+        this.task.id,
+        this.task.reminderId,
+        timestamp,
+        this.task.title,
+      );
+    } else {
+      this._taskService.addReminder(
+        this.task,
+        timestamp,
+       this.task.projectId? true : false,
+      );
+    }
+  }  
+
   editReminder() {
     if (this.task.repeatCfgId) {
       return;

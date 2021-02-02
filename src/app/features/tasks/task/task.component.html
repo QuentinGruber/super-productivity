@@ -284,6 +284,11 @@
             </ng-container>
           </button>
 
+          <button (click)="moveTaskToTomorow();" *ngIf="!task?.parentId&&!task?.isDone" mat-menu-item>
+            <mat-icon>alarm_add</mat-icon>
+            Schedule for tomorow
+          </button>
+
           <button (click)="addSubTask();"
                   *ngIf="!task?.parentId&&!task?.isDone"
                   mat-menu-item
@@ -334,7 +339,7 @@
             <mat-icon>arrow_upward</mat-icon>
             {{T.F.TASK.CMP.MOVE_TO_TODAY|translate}}
           </button>
-
+          <!--
           <button (click)="editTags();"
                   *ngIf="!task?.parentId"
                   mat-menu-item
@@ -342,7 +347,7 @@
             <mat-icon>style</mat-icon>
             {{T.F.TASK.CMP.EDIT_TAGS|translate}}
           </button>
-
+          -->
           <button *ngIf="!task?.parentId && !task?.issueId && !task?.repeatCfgId"
                   [matMenuTriggerFor]="projectMenu"
                   mat-menu-item
