@@ -22,6 +22,12 @@ export const DEFAULT_GLOBAL_CONFIG: GlobalConfigState = {
     isDisableInitialDialog: IS_F_DROID_APP,
     defaultProjectId: null,
     firstDayOfWeek: 1,
+    taskNotesTpl: `**How can I best achieve it now?**
+
+**What do I want?**
+
+**Why do I want it?**
+`,
   },
   evaluation: {
     isHideEvaluationSheet: false,
@@ -36,7 +42,7 @@ export const DEFAULT_GLOBAL_CONFIG: GlobalConfigState = {
     isTakeABreakEnabled: true,
     isLockScreen: false,
     isFocusWindow: false,
-    /* tslint:disable-next-line */
+    /* eslint-disable-next-line */
     takeABreakMessage: 'Take a break! You have been working for ${duration} without one. Go away from the computer! Take a short walk! Makes you more productive in the long run!',
     takeABreakMinWorkingTime: 60 * minute,
     motivationalImg: null,

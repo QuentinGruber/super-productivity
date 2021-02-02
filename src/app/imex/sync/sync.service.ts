@@ -124,7 +124,6 @@ export class SyncService {
         ? this._isInitialSyncDoneManual$.asObservable()
         : of(true);
     }),
-    startWith(true),
   );
   private _afterInitialSyncDoneAndDataLoadedInitially$: Observable<boolean> = this._isInitialSyncDone$.pipe(
     filter(isDone => isDone),
@@ -170,7 +169,7 @@ export class SyncService {
     );
   }
 
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   setInitialSyncDone(val: boolean, syncProvider: SyncProvider) {
     this._isInitialSyncDoneManual$.next(val);
   }

@@ -12,6 +12,7 @@ import {
 } from '../../work-context/work-context.model';
 import {
   AddTask,
+  ConvertToMainTask,
   DeleteTask,
   MoveToArchive,
   MoveToOtherProject,
@@ -126,7 +127,7 @@ export function projectReducer(
   state: ProjectState = initialProjectState,
   action: ProjectActions | AddTask | DeleteTask | MoveToOtherProject | MoveToArchive | RestoreTask
 ): ProjectState {
-  // tslint:disable-next-line
+  // eslint-disable-next-line
   const payload = action['payload'];
 
   // TODO fix this hackyness once we use the new syntax everywhere
@@ -303,6 +304,23 @@ export function projectReducer(
                 ...affectedEntity[prop],
                 task.id,
               ]
+          }
+        }, state)
+        : state;
+    }
+
+    case TaskActionTypes.ConvertToMainTask: {
+      const a = action as ConvertToMainTask;
+      const {task} = a.payload;
+      const affectedEntity = task.projectId && state.entities[task.projectId];
+      return (affectedEntity)
+        ? projectAdapter.updateOne({
+          id: task.projectId as string,
+          changes: {
+            taskIds: [
+              task.id,
+              ...affectedEntity.taskIds,
+            ]
           }
         }, state)
         : state;

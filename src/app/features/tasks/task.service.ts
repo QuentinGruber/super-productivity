@@ -19,6 +19,7 @@ import {
   AddTask,
   AddTaskReminder,
   AddTimeSpent,
+  ConvertToMainTask,
   DeleteMainTasks,
   DeleteTask,
   MoveSubTask,
@@ -555,6 +556,11 @@ export class TaskService {
     this.updateUi(id, {_showSubTasksMode: ShowSubTasksMode.HideAll});
   }
 
+  async convertToMainTask(task: Task) {
+    const parent = await this.getByIdOnce$(task.parentId as string).toPromise();
+    this._store.dispatch(new ConvertToMainTask({task, parentTagIds: parent.tagIds}));
+  }
+
   // GLOBAL TASK MODEL STUFF
   // -----------------------
 
@@ -594,6 +600,12 @@ export class TaskService {
     ) as Task[];
   }
 
+  async getAllTaskByIssueTypeForProject$(projectId: string, issueProviderKey: IssueProviderKey): Promise<Task[]> {
+    const allTasks = await this.getAllTasksForProject(projectId);
+    return allTasks
+      .filter(task => task.issueType === issueProviderKey);
+  }
+
   async getAllIssueIdsForProject(projectId: string, issueProviderKey: IssueProviderKey): Promise<string[] | number[]> {
     const allTasks = await this.getAllTasksForProject(projectId);
     return allTasks
@@ -611,7 +623,8 @@ export class TaskService {
       throw new Error('No project id');
     }
 
-    const findTaskFn = (task: Task | ArchiveTask | undefined) => task && task.issueId === issueId && task.issueType === issueProviderKey && task.projectId === projectId;
+    const findTaskFn = (task: Task | ArchiveTask | undefined) =>
+      task && task.issueId === issueId && task.issueType === issueProviderKey && task.projectId === projectId;
     const allTasks = await this._allTasksWithSubTaskData$.pipe(first()).toPromise() as Task[];
     const taskWithSameIssue: Task = allTasks.find(findTaskFn) as Task;
 
