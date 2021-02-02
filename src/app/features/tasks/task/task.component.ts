@@ -207,13 +207,13 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTimestampsOfNextHour(hour: number) {
     const timestamp =  Date.now();
-    const timestampInDays = timestamp/ (1000*60*60*24)
+    const timestampInDays = timestamp / (1000 * 60 * 60 * 24);
 
-    const currentDayTimestamp = timestampInDays.toFixed(3).toString().split(".")[1];
+    const currentDayTimestamp = timestampInDays.toFixed(3).toString().split('.')[1];
     const hourAimed = (hour - 1) * 1000 /24;
     let result;
-    if(parseInt(currentDayTimestamp) > hourAimed){
-      result = parseInt(timestampInDays.toFixed(0))+hourAimed/1000
+    if(Number(currentDayTimestamp) > hourAimed){
+      result = Number(timestampInDays.toFixed(0))+hourAimed/1000;
     }
     else{
   	result = Math.trunc(timestampInDays)+hourAimed/1000;
@@ -222,8 +222,8 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  moveTaskToTomorow() {    
-    
+  moveTaskToTomorow() {
+
     const timestamp = this.getTimestampsOfNextHour(9);
 
     if (this.task.reminderId) {
@@ -240,7 +240,7 @@ export class TaskComponent implements OnInit, OnDestroy, AfterViewInit {
        this.task.projectId? true : false,
       );
     }
-  }  
+  }
 
   editReminder() {
     if (this.task.repeatCfgId) {
