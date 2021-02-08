@@ -52,7 +52,8 @@ export const SYNC_FORM: ConfigFormSection<SyncConfig> = {
             // text: `<p>Please open the following link and copy the auth code provided there</p>`,
             text: T.F.SYNC.FORM.DROPBOX.FOLLOW_LINK,
           },
-        }, {
+        },
+        {
           type: 'tpl',
           templateOptions: {
             tag: 'p',

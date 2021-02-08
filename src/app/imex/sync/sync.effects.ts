@@ -17,7 +17,6 @@ import {
 } from 'rxjs/operators';
 import { DataInitService } from '../../core/data-init/data-init.service';
 import { SyncService } from '../../imex/sync/sync.service';
-import { SyncProvider } from './sync-provider.model';
 import { SYNC_BEFORE_CLOSE_ID, SYNC_INITIAL_SYNC_TRIGGER, SYNC_MIN_INTERVAL } from '../../imex/sync/sync.const';
 import { combineLatest, EMPTY, merge, Observable, of } from 'rxjs';
 import { isOnline$ } from '../../util/is-online';
@@ -28,7 +27,7 @@ import { IS_ELECTRON } from '../../app.constants';
 import { TaskService } from '../../features/tasks/task.service';
 import { SimpleCounterService } from '../../features/simple-counter/simple-counter.service';
 import { SyncProviderService } from './sync-provider.service';
-import { truncate } from '../../util/truncate';
+import { getSyncErrorStr } from './get-sync-error-str';
 
 @Injectable()
 export class SyncEffects {
@@ -90,8 +89,18 @@ export class SyncEffects {
       // initial after starting app
       this._syncProviderService.isEnabledAndReady$.pipe(
         take(1),
-        filter((isEnabledAndReady: boolean) => isEnabledAndReady),
-        mapTo(SYNC_INITIAL_SYNC_TRIGGER),
+        switchMap((isEnabledAndReady) => {
+          if (isEnabledAndReady) {
+            return of(SYNC_INITIAL_SYNC_TRIGGER);
+          } else {
+            this._syncService.setInitialSyncDone(true);
+            this._snackService.open({
+              msg: T.F.SYNC.S.INITIAL_SYNC_ERROR,
+              type: 'ERROR'
+            });
+            return EMPTY;
+          }
+        }),
       ),
 
       // initial after enabling it,
@@ -104,7 +113,7 @@ export class SyncEffects {
       if (!isOnline) {
         // this._snackService.open({msg: T.F.DROPBOX.S.OFFLINE, type: 'ERROR'});
         if (trigger === SYNC_INITIAL_SYNC_TRIGGER) {
-          this._syncService.setInitialSyncDone(true, SyncProvider.Dropbox);
+          this._syncService.setInitialSyncDone(true);
         }
         // we need to return something
         return of(null);
@@ -112,18 +121,15 @@ export class SyncEffects {
       return this._syncProviderService.sync()
         .then(() => {
           if (trigger === SYNC_INITIAL_SYNC_TRIGGER) {
-            this._syncService.setInitialSyncDone(true, SyncProvider.Dropbox);
+            this._syncService.setInitialSyncDone(true);
           }
         })
         .catch((err: unknown) => {
-          console.error(err);
-          const e: string = err && (err as any)?.toString
-            ? (err as any).toString()
-            : '???';
+          this._syncService.setInitialSyncDone(true);
           this._snackService.open({
             msg: T.F.SYNC.S.UNKNOWN_ERROR,
             translateParams: {
-              err: truncate(e.toString(), 100),
+              err: getSyncErrorStr(err),
             },
             type: 'ERROR'
           });
