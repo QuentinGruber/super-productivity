@@ -525,6 +525,12 @@
         "NO_REMOTE_DATA": "No remote data found. Upload local to Remote?",
         "TRY_LOAD_REMOTE_AGAIN": "Try to re-load data from remote once again?"
       },
+      "D_AUTH_CODE": {
+        "TITLE": "Login: {{provider}}",
+        "FOLLOW_LINK": "Please open the following link and copy the auth code provided there into the the input field below.",
+        "GET_AUTH_CODE": "Get Authorization Code",
+        "L_AUTH_CODE": "Enter Auth Code"
+      },
       "D_CONFLICT": {
         "LAST_CHANGE": "Last Change:",
         "LAST_SYNC": "Last Sync:",
@@ -563,6 +569,7 @@
         "ERROR_FALLBACK_TO_BACKUP": "Something went wrong while importing the data. Falling back to local backup.",
         "ERROR_INVALID_DATA": "Error while syncing. Invalid data",
         "IMPORTING": "Importing data",
+        "INITIAL_SYNC_ERROR": "Initial Sync failed",
         "SUCCESS": "Data imported",
         "UNKNOWN_ERROR": "Unknown Sync Error: {{err}}",
         "UPLOAD_ERROR": "Unknown Upload Error (Settings correct?): {{err}}"
@@ -800,6 +807,7 @@
           "TIME_AS_MILLISECONDS": "Time as milliseconds",
           "TIME_AS_STRING": "Time as string (e.g. 5h 23m)",
           "TITLES_AND_SUB_TASK_TITLES": "Titles and Sub Task Titles",
+          "NOTES": "Task Descriptions",
           "WORKLOG": "Worklog"
         },
         "OPTIONS": "Options",
@@ -1102,7 +1110,7 @@
   "PS": {
     "GLOBAL_SETTINGS": "Global Settings",
     "ISSUE_INTEGRATION": "Issue Integration",
-    "PRIVATE_POLICY": "Private Policy",
+    "PRIVACY_POLICY": "Privacy Policy",
     "PRODUCTIVITY_HELPER": "Productivity Helper",
     "PROJECT_SETTINGS": "Project Specific Settings",
     "PROVIDE_FEEDBACK": "Provide Feedback",

@@ -61,6 +61,7 @@ export type PomodoroConfig = Readonly<{
 export interface GoogleDriveSyncConfig {
   isCompressData: boolean;
   syncFileName: string;
+  authCode: string | null;
   _syncFileNameForBackupDocId: string | null;
   _backupDocId: string | null;
 }
@@ -78,11 +79,11 @@ export interface WebDavConfig {
 }
 
 export type LocalBackupConfig = Readonly<{
-  isEnabled: boolean,
+  isEnabled: boolean;
 }>;
 
 export type LanguageConfig = Readonly<{
-  lng: LanguageCode | null,
+  lng: LanguageCode | null;
 }>;
 
 export type SoundConfig = Readonly<{
@@ -94,8 +95,8 @@ export type SoundConfig = Readonly<{
 
 export type SyncConfig = Readonly<{
   isEnabled: boolean;
-  syncProvider: SyncProvider | null,
-  syncInterval: number,
+  syncProvider: SyncProvider | null;
+  syncInterval: number;
 
   dropboxSync: DropboxSyncConfig;
   googleDriveSync: GoogleDriveSyncConfig;
@@ -132,6 +133,7 @@ export type GlobalSectionConfig
   | PomodoroConfig
   | DropboxSyncConfig
   | KeyboardConfig
+  | SyncConfig
   ;
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -149,7 +151,7 @@ export interface ConfigFormSection<FormModel> {
   title: string;
   key: GlobalConfigSectionKey | ProjectCfgFormKey;
   help?: string;
-  helpArr?: { h?: string; p: string; p2?: string; p3?: string; p4?: string; }[];
+  helpArr?: { h?: string; p: string; p2?: string; p3?: string; p4?: string }[];
   customSection?: CustomCfgSection;
   items?: LimitedFormlyFieldConfig<FormModel>[];
   isElectronOnly?: boolean;

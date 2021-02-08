@@ -16,7 +16,7 @@ import { IS_F_DROID_APP } from '../../../util/is-android-web-view';
 export class GoogleDriveSyncService implements SyncProviderServiceInterface {
   id: SyncProvider = SyncProvider.GoogleDrive;
 
-  cfg$: Observable<GoogleDriveSyncConfig> = this._configService.cfg$.pipe(map(cfg => cfg.sync.googleDriveSync));
+  cfg$: Observable<GoogleDriveSyncConfig> = this._globalConfigService.cfg$.pipe(map(cfg => cfg.sync.googleDriveSync));
 
   isReady$: Observable<boolean> = this._dataInitService.isAllDataLoadedInitially$.pipe(
     concatMap(() => this._googleApiService.isLoggedIn$),
@@ -32,11 +32,17 @@ export class GoogleDriveSyncService implements SyncProviderServiceInterface {
   );
 
   constructor(
-    private _configService: GlobalConfigService,
+    private _globalConfigService: GlobalConfigService,
     private _googleApiService: GoogleApiService,
     private _dataInitService: DataInitService,
     private _compressionService: CompressionService,
   ) {
+    // setInterval(() => {
+    //   console.log('REQUEST!!!');
+    //   if (IS_ELECTRON) {
+    //   }
+    // }, 45 * 1000);
+
   }
 
   async getRevAndLastClientUpdate(localRev: string): Promise<{ rev: string; clientUpdate: number } | SyncGetRevResult> {
@@ -55,7 +61,7 @@ export class GoogleDriveSyncService implements SyncProviderServiceInterface {
     };
   }
 
-  async downloadAppData(): Promise<{ rev: string, data: AppDataComplete | undefined }> {
+  async downloadAppData(): Promise<{ rev: string; data: AppDataComplete | undefined }> {
     if (IS_F_DROID_APP) {
       throw new Error('Google Drive Sync not supported on FDroid');
     }
